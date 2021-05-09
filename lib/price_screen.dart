@@ -9,7 +9,7 @@ class PriceScreen extends StatefulWidget {
 class _PriceScreenState extends State<PriceScreen> {
   String selectedCurrency = 'USD';
 
-  List<DropdownMenuItem> getDropdownItem() {
+  DropdownButton getDropdownItem() {
     List<DropdownMenuItem<String>> dropdownList = [];
     for (String item in currenciesList) {
       var dropdownItem = DropdownMenuItem(
@@ -18,14 +18,27 @@ class _PriceScreenState extends State<PriceScreen> {
       );
       dropdownList.add(dropdownItem);
     }
-    return dropdownList;
+     return DropdownButton<String> (
+        value: selectedCurrency,
+        items: dropdownList,
+        onChanged: (value) {
+          setState(() {
+            selectedCurrency = value;
+          });
+        },
+      );
   }
-  List<Text> getPickerItems() {
+  CupertinoPicker getPickerItems() {
     List<Text> pickerList = [];
     for (String item in currenciesList) {
      pickerList.add(Text(item));
     }
-    return pickerList;
+    return  CupertinoPicker(itemExtent: 32.0,
+        onSelectedItemChanged: (selectedIndex) {
+          print(selectedIndex);
+        },
+        children: pickerList
+    );
   }
   @override
   Widget build(BuildContext context) {
@@ -63,12 +76,7 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: CupertinoPicker(itemExtent: 32.0,
-                onSelectedItemChanged: (selectedIndex) {
-                  print(selectedIndex);
-                },
-                children: getPickerItems()
-          ),
+            child:
           )
         ],
       ),
@@ -76,12 +84,3 @@ class _PriceScreenState extends State<PriceScreen> {
   }
 }
 
-// DropdownButton<String> (
-// value: selectedCurrency,
-// items: getDropdownItem(),
-// onChanged: (value) {
-// setState(() {
-// selectedCurrency = value;
-// });
-// },
-// ),
